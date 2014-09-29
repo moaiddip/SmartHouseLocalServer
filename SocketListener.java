@@ -1,12 +1,13 @@
 
 public class SocketListener {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		SocketListener sl = new SocketListener();
+		sl.socketConnections();
 
 	}
-
+	
+	private void socketConnections(){
+		
+	}
 }
