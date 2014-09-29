@@ -7,7 +7,7 @@ public class SocketListener {
 	String SERVER="127.0.0.1";
 	public static void main(String[] args) {
 		SocketListener sl = new SocketListener();
-		sl.socketConnections();
+		sl.socketConnections();//haha
 
 	}
 	
