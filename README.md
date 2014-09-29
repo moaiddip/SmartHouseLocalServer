@@ -1,3 +1,3 @@
 SmartHouseLocalServer
-HI123
+HI
 =====================
