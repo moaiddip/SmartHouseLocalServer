@@ -1,5 +1,5 @@
 
-public class Admin {//h.l
+public class Admin {
 	
 	public void getAllUsers(){
 		

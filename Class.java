@@ -1,7 +1,7 @@
 
 public class Class {
 	
-	public void getAllAllowDevice(){
+	public void getAllAllowedDevice(){
 		
 	}
     public void DevicePin(){
