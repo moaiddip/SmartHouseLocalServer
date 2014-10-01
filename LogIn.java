@@ -1,6 +1,6 @@
 public class LogIn {
 
-    private boolean userLogin =  false; //test   
+    private boolean userLogin =  false; //test  //TEST 
     private String userID = "";    
     private String userType = "";    
 
