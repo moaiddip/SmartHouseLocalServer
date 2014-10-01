@@ -1,20 +1,22 @@
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
-public class DbHandler {
+
+public class UserDb {
+	String url = "jdbc:mysql://localhost:3306/";
+	String dbName = "demo";
+	String driver = "com.mysql.jdbc.Driver";
+	String userName = "root";
+	String password = "mypassword";
 	Connection conn;
 	Statement st;
 	ResultSet res;
 
-	public DbHandler() {
-
-	}
 
 	public void connect() {
-		String url = "jdbc:mysql://localhost:3306/";
-		String dbName = "demo";
-		String driver = "com.mysql.jdbc.Driver";
-		String userName = "root";
-		String password = "mypassword";
+		
 		try {
 			Class.forName(driver).newInstance();
 			Connection conn = DriverManager.getConnection(url + dbName,
@@ -41,5 +43,4 @@ public class DbHandler {
 			System.out.println(e);
 		}
 	}
-
 }
