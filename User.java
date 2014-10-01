@@ -1,15 +1,18 @@
+import java.net.Socket;
+
 
 public class User implements Runnable {
 
 	DbQueue db_queue = null;
-
-	public User() {//
+	private Socket socket=null;
+	public User(Socket socket) {//
 		db_queue = new DbQueue("User");
+		this.socket=socket;
 		int deviceId = 0;
 	}
 
 	private void taskHandler(String task) {
-		if (task.equals("lampaPÅ")) {
+		if (task.equals("lampaPÃ¥")) {
 
 		}
 
@@ -18,29 +21,6 @@ public class User implements Runnable {
 	public void run() {
 
 	}
-
-	public void getAllAllowedDevice() {
-
-	}
-
-	public void getDevicePin(int deviceId) {
-
-	}
-
-	public boolean toggleDevice(boolean state) {
-		boolean statment = false;
-		return statment;
-	}
-
-	public void getHouseIP() {
-
-	}
-
-	public void getHousePort() {
-
-	}
-
-	public void addDeviceHistory() {
-
-	}
+	
+	
 }
