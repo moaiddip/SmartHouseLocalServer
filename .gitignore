@@ -2,3 +2,15 @@
 /Admin.class
 /LogIn.class
 /Class.class
+<<<<<<< HEAD
+=======
+/User.class
+/DbHandler.class
+/UserDatabase.class
+/UserDB.class
+/AdminDB.class
+/DbQueue.class
+/UserDb.class
+/AdminDb.class
+>>>>>>> origin/master
+/UserClass.class
