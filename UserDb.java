@@ -19,7 +19,7 @@ public class UserDb {
 		System.out.print("Trying to connect . . . ");
 
 		try {
-			Class.forName(driver).newInstance();
+			//Class.forName(driver).newInstance();
 			Connection conn = DriverManager.getConnection(url + dbName,
 					userName, password);
 			// Statement st = conn.createStatement();
@@ -35,7 +35,7 @@ public class UserDb {
 			System.out.println("Connected!!!");
 		} catch (Exception e) {
 			System.out.println(e);
-		}
+		}	
 	}
 
 	public void disconnect() {
