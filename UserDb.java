@@ -3,25 +3,27 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-
 public class UserDb {
-	String url = "jdbc:mysql://localhost:3306/";
-	String dbName = "demo";
+	String url = "jdbc:mysql://localhost:3307/";
+	String dbName = "localdatabase";
 	String driver = "com.mysql.jdbc.Driver";
 	String userName = "root";
-	String password = "mypassword";
+	String password = "root321";
 	Connection conn;
 	Statement st;
 	ResultSet res;
-
+	
+	public UserDb(){
+		//Test, Comment the following lines if you face issues
+		connect();
+		disconnect();
+	}
 
 	public void connect() {
-		System.out.print("Trying to connect . . . ");
-
+		System.out.print("Trying to connect to database . . . ");
 		try {
-			//Class.forName(driver).newInstance();
-			Connection conn = DriverManager.getConnection(url + dbName,
-					userName, password);
+		      Class.forName("com.mysql.jdbc.Driver");
+		      conn = DriverManager.getConnection(url + dbName, userName, password);
 			// Statement st = conn.createStatement();
 			// ResultSet res = st.executeQuery("SELECT * FROM  event");
 			// while (res.next()) {
@@ -39,9 +41,9 @@ public class UserDb {
 	}
 
 	public void disconnect() {
-		System.out.println("Disconnected.");
 		try {
 			conn.close();
+			System.out.println("Disconnected from database.");
 		} catch (Exception e) {
 			System.out.println(e);
 		}
