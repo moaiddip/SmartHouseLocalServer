@@ -16,7 +16,8 @@ public class UserDb {
 
 
 	public void connect() {
-		
+		System.out.print("Trying to connect . . . ");
+
 		try {
 			Class.forName(driver).newInstance();
 			Connection conn = DriverManager.getConnection(url + dbName,
@@ -31,12 +32,14 @@ public class UserDb {
 			// int val = st.executeUpdate("INSERT into event VALUES(" + 1 + ","
 			// + "'Easy'" + ")");
 			// if (val == 1)
+			System.out.println("Connected!!!");
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 	}
 
 	public void disconnect() {
+		System.out.println("Disconnected.");
 		try {
 			conn.close();
 		} catch (Exception e) {
