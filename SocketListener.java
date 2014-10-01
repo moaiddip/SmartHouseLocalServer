@@ -2,7 +2,7 @@ import java.net.Socket;
 
 
 public class SocketListener {
-	Socket socket;
+	Socket socket;//test
 	int PORT=1111;
 	String SERVER="127.0.0.1";//changes DIno
 	public static void main(String[] args) {
