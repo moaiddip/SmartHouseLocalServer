@@ -22,6 +22,7 @@ public class SocketListener {
 	private void initilizingSocket(){//ok
 		try{//ok
 			serversocket = new ServerSocket(PORT);
+			System.out.println("The Local Server of the SmartHouse runs and is operative\n\n\n");
 			}catch(Exception ex){
 			ex.printStackTrace();
 			System.out.println("serversocket = new ServerSocket(PORT) - FAILED in CLASS SocketListener in method initilizingSocket()");
@@ -29,22 +30,23 @@ public class SocketListener {
 	}
 	
 	private void handlingSocketConnections(){
-		try {
-            socket = serversocket.accept();
-            LogIn login= new LogIn(socket);
-             Thread client =new Thread(login,getIpAdress());
-             System.out.println("The user that has connected to the local server has IP number: "+getIpAdress());
-             client.start();
-        } catch (IOException ex) {
-        	ex.printStackTrace();
-			System.out.println("serversocket = new ServerSocket(PORT) - FAILED in CLASS SocketListener in method initilizingSocket()");
-            Logger.getLogger(SocketListener.class.getName()).log(Level.SEVERE, null, ex);
-        }
+		while(1<2){
+			try {
+	            socket = serversocket.accept();
+	            LogIn login= new LogIn(socket,getIpAdress());
+	            Thread client =new Thread(login,getIpAdress());
+	            System.out.println("The user that has connected to the local server has IP number: "+getIpAdress());
+	            client.start();
+	        } catch (IOException ex) {
+	        	ex.printStackTrace();
+				System.out.println("serversocket = new ServerSocket(PORT) - FAILED in CLASS SocketListener in method initilizingSocket()");
+	            Logger.getLogger(SocketListener.class.getName()).log(Level.SEVERE, null, ex);
+	        }
+		}
 	}
 	
 	private String getIpAdress(){
     	String ipAdress=socket.getLocalSocketAddress().toString();
-    	System.out.println("socket.getLocalSocketAddress().toString()=="+socket.getLocalSocketAddress().toString());
     	int start=0,end=0;
     	try {
 			InetAddress ip=InetAddress.getLocalHost();
@@ -57,10 +59,7 @@ public class SocketListener {
 				} 
 			}
 			socket.getLocalSocketAddress().toString();
-			System.out.println("\n\n\nsocket.getLocalSocketAddress().toString()=="+socket.getLocalSocketAddress().toString());
-			System.out.println("\n\n\nIP adressen är: "+ip+"\n\n\n");
 		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
     	return ipAdress.substring(start, end);

@@ -12,9 +12,10 @@ public class UserDb {
 	Connection conn;
 	Statement st;
 	ResultSet res;
-	
-	public UserDb(){
+	private String user_ssn=null;
+	public UserDb(String user_ssn){
 		//Test, Comment the following lines if you face issues
+		this.user_ssn=user_ssn;
 		connect();
 		disconnect();
 	}
@@ -39,7 +40,23 @@ public class UserDb {
 			System.out.println(e);
 		}	
 	}
-
+	
+	public String toggleDevice(int deviceID){//EXAMPLE TAKE THIS AWAY IF WANTED //dinO
+		String confirmation="ERROR";
+		connect();
+		try{
+			st.executeUpdate("UPDATE");
+			confirmation="actionCompletedWithoutErrors";
+		}catch(Exception ex){
+			System.out.println("\n\n\n\nERROR IN: Class UserDb in method: toggleDevice\n\n\n\n");
+			ex.printStackTrace();
+		}
+		finally{
+			disconnect();
+		}
+		return confirmation;
+	}
+	
 	public void disconnect() {
 		try {
 			conn.close();

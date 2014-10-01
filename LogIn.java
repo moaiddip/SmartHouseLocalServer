@@ -6,34 +6,55 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
+import com.mysql.fabric.xmlrpc.Client;
 
 public class LogIn implements Runnable {
-	private DataInputStream serverInput;
-	private DataOutputStream serverOutput;
+	DataInputStream serverInput;//PRELIMINARY PROTOCOL FUNCTION
+    DataOutputStream serverOutput;//PRELIMINARY PROTOCOL FUNCTION
     private boolean userLogin =  false;
     private String userID = "";    
     private String userType = "";    
     private Socket socket;
-	public LogIn(Socket socket){
+    private String client_ip=null;
+    private boolean clinetIsConnected=false;
+	public LogIn(Socket socket,String ip){
 		this.socket=socket;
+		this.client_ip=ip;
+		this.clinetIsConnected=true;
 	}
 	
 	@Override
 	public void run() {//ok
-		ArrayList log_in=getInputObjectFromuser();
-		if(log_in.size()>1 && authenticationIsCorrect("username", "password")==true){
-			User user=new User(socket);
-	        Thread login =new Thread(user,"ssn");
-	        login.start();
-	        Thread.currentThread().stop();//ok
-		}else{
-			//skicka information att lösenordet är fel
-		}
-		
-	}     
+		while(clinetIsConnected==true){
+			try{
+				loginHandler(getInputObjectFromUser());
+			}catch(Exception ex){
+				ex.printStackTrace();
+				clinetIsConnected=false;
+				System.out.println("\n\nClient with the ip number: "+client_ip+" has disconnected from the server\n\n");
+				 Thread.currentThread().stop();
+			}
+		}		
+	}    
+	
+	
+	
+	private void loginHandler(ArrayList usernamePassword){
+			try{
+				if(authenticationIsCorrect(usernamePassword.get(0).toString(), usernamePassword.toString())==true){
+					User user=new User(socket,"870724-1234");
+			        Thread login =new Thread(user,"ssn");
+			        login.start();
+			        Thread.currentThread().stop();//ok
+				}else{
+					ArrayList result = new ArrayList();
+					result.add("Wrong password or username");
+					sendOutputObjectToUser(result);
+				}
+			}catch(Exception ex){
+				ex.printStackTrace();
+			}
+	}
 	
 	private boolean authenticationIsCorrect(String userName, String password){
 		if(userName.equals("username") && password.equals("password")){
@@ -46,25 +67,29 @@ public class LogIn implements Runnable {
 	}
     
     
-    public void sendOutputObjectToUser(ArrayList outputList){
+	public void sendOutputObjectToUser(ArrayList outputList){//PRELIMINARY PROTOCOL FUNCTION
 		try {
 			ObjectOutputStream objectOutput = new ObjectOutputStream(socket.getOutputStream());
 			objectOutput.writeObject(outputList);
 			objectOutput.flush();
-		} catch (IOException e) {
-			System.out.println();
-			e.printStackTrace();
+		} catch (IOException ex) {
+			System.out.println("\n\n\n####################################\nWrong with: Class Login - sendOutputObjectToUser()\n####################################\n\n\n");
+			/*System.out.print("\nprintStackTrace()==");
+			ex.printStackTrace();*/
 		}
-   }
-   
-    public ArrayList getInputObjectFromuser(){
+    }
+    
+    public ArrayList getInputObjectFromUser(){//PRELIMINARY PROTOCOL FUNCTION
     	ArrayList inputList;
     	try{
     		ObjectInputStream objectInput = new ObjectInputStream(socket.getInputStream());
     		inputList=(ArrayList) objectInput.readObject();
     	}catch(Exception ex){
-    		System.out.println("##  Wrong with input object in class TB_LogInGUI in method - public ArrayList getInputObjectFromuser()  ##");
-    		return null;
+    		System.out.println("\n\n\n####################################\nWrong with: Class Login - getInputObjectFromUser()\n####################################\n\n\n");
+			/*System.out.print("\nprintStackTrace()==");
+			ex.printStackTrace();*/
+    		clinetIsConnected=false;
+			return null;
     	}
     	return inputList;
     }
