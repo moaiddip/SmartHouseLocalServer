@@ -24,7 +24,7 @@ public class User implements Runnable {
 	}
 
 	
-	@Override
+	
 	public void run() {//As long as user is connected the taskhandler will wait for instructions from user to calculate and retrun answer
 		while(userConnected==true){
 			try{
@@ -39,7 +39,7 @@ public class User implements Runnable {
 	private void taskHandler(ArrayList task) {
 		if (task.get(0).equals("lightsOn")) {//reacts on if-stmt
 			ArrayList send = new ArrayList();
-			send.add(db_queue.udb.toggleDevice((int)task.get(1)));//calls the method to preform actions and stores the confirmation in the arrayList, task.get(1) is an int(deviceID).
+			//send.add(db_queue.udb.toggleDevice((int)task.get(1)));//calls the method to preform actions and stores the confirmation in the arrayList, task.get(1) is an int(deviceID).
 			sendOutputObjectToUser(send);//sends arrayList
 		}
 
