@@ -3,7 +3,7 @@ public class Admin {
 	//Just testing 
 	//Tarik
 	public void getAllUsers(){
-		
+		//Sepideh Test 
 	}
 	public void getAllPermissionsForUser(){
 		
