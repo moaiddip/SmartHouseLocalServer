@@ -14,9 +14,10 @@ public class SocketListener {
 	private String SERVER="127.0.0.1";
 	
 	public static void main(String[] args) {
+		UserDb UsDb = new UserDb(); // Comment if you dont have db implemented 
 		SocketListener sl = new SocketListener();
-		sl.initializingSocket();
-		sl.handlingSocketConnections();
+//		sl.initializingSocket();
+//		sl.handlingSocketConnections();
 	}
 	
 	private void initializingSocket(){//ok
@@ -30,7 +31,7 @@ public class SocketListener {
 	}
 	
 	private void handlingSocketConnections(){
-		while(1<2){
+		while(true){
 			try {
 	            socket = serversocket.accept();
 	            LogIn login= new LogIn(socket,getIpAdress());

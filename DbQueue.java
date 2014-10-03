@@ -7,7 +7,7 @@ public class DbQueue {
 
 	public DbQueue(String userOrAdmin,String user_ssn) {//
 		if (userOrAdmin.equals("user")) {
-			udb = new UserDb(user_ssn);
+//			udb = new UserDb(user_ssn);
 		} else if (userOrAdmin.equals("Admin")) {
 			adb = new AdminDb();
 		}
