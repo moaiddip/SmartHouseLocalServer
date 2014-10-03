@@ -12,14 +12,14 @@ public class SocketListener {
 	private Socket socket=null;
 	private int PORT=1111;
 	private String SERVER="127.0.0.1";
+	
 	public static void main(String[] args) {
 		SocketListener sl = new SocketListener();
-		sl.initilizingSocket();
+		sl.initializingSocket();
 		sl.handlingSocketConnections();
-
 	}
 	
-	private void initilizingSocket(){//ok
+	private void initializingSocket(){//ok
 		try{//ok
 			serversocket = new ServerSocket(PORT);
 			System.out.println("The Local Server of the SmartHouse runs and is operative\n\n\n");
