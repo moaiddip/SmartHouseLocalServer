@@ -17,6 +17,7 @@ public class UserDb {
 		//Test, Comment the following lines if you face issues
 		this.user_ssn=user_ssn;
 		connect();
+		//Method to retrieve 
 		disconnect();
 	}
 
