@@ -23,7 +23,7 @@ public class LogIn implements Runnable {
 		this.clinetIsConnected=true;
 	}
 	
-	@Override
+
 	public void run() {//ok
 		while(clinetIsConnected==true){
 			try{
