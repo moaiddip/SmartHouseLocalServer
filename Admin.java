@@ -1,6 +1,7 @@
 
 public class Admin {
 	//Just testing 
+	//Tarik
 	public void getAllUsers(){
 		
 	}
