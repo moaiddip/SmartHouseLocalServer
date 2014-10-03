@@ -14,7 +14,7 @@ public class SocketListener {
 	private String SERVER="127.0.0.1";
 	
 	public static void main(String[] args) {
-		UserDb UsDb = new UserDb(); // Comment if you dont have db implemented 
+		UserDb UsDb = new UserDb(null); //
 		SocketListener sl = new SocketListener();
 //		sl.initializingSocket();
 //		sl.handlingSocketConnections();
