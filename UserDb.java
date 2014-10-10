@@ -15,11 +15,11 @@ public class UserDb {
 	private Connection conn;
 	private Statement st;
 	private ResultSet res;
-	private User user;
+	private String user_ssn;
 
-	public UserDb(User user) {
-		this.user = user;
-		testConnection();
+	public UserDb(String user_ssn) {
+		this.user_ssn = user_ssn;
+//		testConnection();
 
 	}
 
@@ -60,7 +60,9 @@ public class UserDb {
 		}
 	}
 
-	public void toggleDevice(int deviceID, boolean state) {
+	public String toggleDevice(int deviceID, boolean state) {
+		connect();
+		System.out.println("entered ToggleDevice");
 		// Need to insert condition so user can only users with permission can
 		String update1 = "UPDATE devices\n" + "SET deviceState = " + state
 				+ "\n"
@@ -93,6 +95,7 @@ public class UserDb {
 		} finally {
 			disconnect();
 		}
+		return "OKEY";
 	}
 
 	private void addDeviceHistory(int deviceID, boolean state) {

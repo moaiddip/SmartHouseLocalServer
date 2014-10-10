@@ -27,7 +27,7 @@ public class LogIn implements Runnable {
 	public void run() {//ok
 		while(clinetIsConnected==true){
 			try{
-				loginHandler(getInputObjectFromUser());
+				loginHandler(convertStringToArrayList(getStringInputFromUser()));
 			}catch(Exception ex){
 				ex.printStackTrace();
 				clinetIsConnected=false;
@@ -41,15 +41,16 @@ public class LogIn implements Runnable {
 	
 	private void loginHandler(ArrayList usernamePassword){
 			try{
-				if(authenticationIsCorrect(usernamePassword.get(0).toString(), usernamePassword.toString())==true){
-					User user=new User(socket,"870724-1234");
+				System.out.println("loginHandler");
+				if(authenticationIsCorrect(usernamePassword.get(0).toString(), usernamePassword.get(1).toString())){
+					User user=new User(socket,"9310101337");
 			        Thread login =new Thread(user,"ssn");
 			        login.start();
 			        Thread.currentThread().stop();//ok
 				}else{
 					ArrayList result = new ArrayList();
 					result.add("Wrong password or username");
-					sendOutputObjectToUser(result);
+					sendStringOutputToUser("ok");;
 				}
 			}catch(Exception ex){
 				ex.printStackTrace();
@@ -57,6 +58,8 @@ public class LogIn implements Runnable {
 	}
 	
 	private boolean authenticationIsCorrect(String userName, String password){
+		System.out.println("userName: " + userName);
+		System.out.println("password: " + password);
 		if(userName.equals("username") && password.equals("password")){
 			return true;
 		}else{
@@ -67,30 +70,54 @@ public class LogIn implements Runnable {
 	}
     
     
-	public void sendOutputObjectToUser(ArrayList outputList){//PRELIMINARY PROTOCOL FUNCTION
+	private String getStringInputFromUser() {
+		System.out.println(Thread.currentThread().getName()
+				+ " är inne i getInputFromUser() ");
+		String input = "";
 		try {
-			ObjectOutputStream objectOutput = new ObjectOutputStream(socket.getOutputStream());
-			objectOutput.writeObject(outputList);
-			objectOutput.flush();
-		} catch (IOException ex) {
-			System.out.println("\n\n\n####################################\nWrong with: Class Login - sendOutputObjectToUser()\n####################################\n\n\n");
-			/*System.out.print("\nprintStackTrace()==");
-			ex.printStackTrace();*/
+			serverInput = new DataInputStream(socket.getInputStream());
+			input = serverInput.readUTF();
+			return input;
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out
+					.println("\n\nERROR - Class: User(Local Server)\nMethod: private String getStringInputFromUser()");
 		}
-    }
-    
-    public ArrayList getInputObjectFromUser(){//PRELIMINARY PROTOCOL FUNCTION
-    	ArrayList inputList;
-    	try{
-    		ObjectInputStream objectInput = new ObjectInputStream(socket.getInputStream());
-    		inputList=(ArrayList) objectInput.readObject();
-    	}catch(Exception ex){
-    		System.out.println("\n\n\n####################################\nWrong with: Class Login - getInputObjectFromUser()\n####################################\n\n\n");
-			/*System.out.print("\nprintStackTrace()==");
-			ex.printStackTrace();*/
-    		clinetIsConnected=false;
-			return null;
-    	}
-    	return inputList;
-    }
+		return input;
+	}
+
+	private void sendStringOutputToUser(String output) {
+		System.out.println(Thread.currentThread().getName()
+				+ " är inne i sendOutputToUser(String output) ");
+		try {
+			serverOutput = new DataOutputStream(socket.getOutputStream());
+			serverOutput.writeUTF(output);
+			serverOutput.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out
+					.println("\n\nERROR - Class: User(Local Server)\nMethod: private String sendStringOutputToUser(String output)");
+		}
+	}
+
+	private ArrayList convertStringToArrayList(String stringList) {
+		ArrayList taskList = new ArrayList();
+		int lastSeparator = -1;
+		for (int i = 0; i < stringList.length(); i++) {
+			if (stringList.charAt(i) == ':') {
+				taskList.add(stringList.subSequence(lastSeparator + 1, i));
+				lastSeparator = i;
+			}
+		}
+		return taskList;
+	}
+
+	private String convertArrayListToString(ArrayList arrayList) {
+		String stringList = "";
+		int lastSeparator = -1;
+		for (int i = 0; i < arrayList.size(); i++) {
+			stringList = stringList + arrayList.get(i) + ":";
+		}
+		return stringList;
+	}
 }   
