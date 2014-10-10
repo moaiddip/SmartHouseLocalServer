@@ -44,8 +44,8 @@ public class Admin {
 	
 	public void createNewUser(){
 		//create new user;
-		try{
-			System.out.println(User.getUsers());
+//		try{
+//			System.out.println(User.getUsers());
 	}
 	
 	public void deleteUser(){

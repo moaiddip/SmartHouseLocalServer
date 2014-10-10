@@ -69,11 +69,10 @@ public class UserDb {
 				+ "WHERE Permissions.userSSN = '9910101437' \n" // laterUser.SSN
 				+ "AND Permissions.deviceId = " + deviceID + "\n"
 				+ "AND Permissions.isAllowed = true);";
-		
-		String query = "SELECT isAllowed\n"
-				+"FROM permissions\n"
-				+"WHERE userssn = '9910101437'\n" //Later user.ssn
-				+"AND deviceId = " + deviceID + ";";
+
+		String query = "SELECT isAllowed\n" + "FROM permissions\n"
+				+ "WHERE userssn = '9910101437'\n" // Later user.ssn
+				+ "AND deviceId = " + deviceID + ";";
 		String update = "UPDATE devices\n" + "SET deviceState = " + state
 				+ "\n" + "WHERE deviceId = " + deviceID;
 		System.out.println("******UPDATE****** \n" + update
@@ -83,8 +82,8 @@ public class UserDb {
 			res = st.executeQuery(query);
 			res.next();
 			boolean isAllowed = res.getBoolean("isAllowed");
-			if (isAllowed==true){
-				//arduino Togglemethod here
+			if (isAllowed == true) {
+				// arduino Togglemethod here
 				st.executeUpdate(update);
 				addDeviceHistory(deviceID, state);
 			}
@@ -97,7 +96,7 @@ public class UserDb {
 	}
 
 	private void addDeviceHistory(int deviceID, boolean state) {
-		
+
 	}
 
 	public int getDevicePin(int deviceID) {
@@ -135,7 +134,9 @@ public class UserDb {
 			res = st.executeQuery(query);// //////////
 			System.out.println("Query Succesful");
 			while (res.next()) {// /////////
-				System.out.println(res.getString("deviceName") + " " + res.getString("roomName") + " " +res.getBoolean("deviceState"));// ////////
+				System.out.println(res.getString("deviceName") + " "
+						+ res.getString("roomName") + " "
+						+ res.getBoolean("deviceState"));// ////////
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -145,7 +146,7 @@ public class UserDb {
 		}
 	}
 
-	// FOR CHANGING FOR DATATYPES BECAUSE BOOLEAN IN SQL IS 1 or 2
+	// FOR CHANGING FOR DATATYPES AND RETRIEVING DATE/TIME
 	public int booleanToInt(boolean b) {
 		if (b) {
 			return 1;
@@ -160,7 +161,20 @@ public class UserDb {
 		return false;
 	}
 
-	// FOR MAKING OF NEW QUERIES/UPDATES
+	// public String getCurrentDate(){
+	// DateFormat dt =new SimpleDateFormat("yyyy-MM-dd");
+	// Date date = new Date();
+	// return dt.format(date);
+	// }
+	//
+	// public String getCurrentTime(){
+	// DateFormat dt =new SimpleDateFormat("HH:mm:ss");
+	// Date date = new Date();
+	// return dt.format(date);
+	// }
+
+	
+	// FOR MAKING OF NEW QUERIES/UPDATES/INSERTS
 	public void defaultQuery() {
 		String query = "SELECT roomName " + "From rooms";
 		System.out.println("******UPDATE****** \n" + query
@@ -191,7 +205,7 @@ public class UserDb {
 			System.out.print(e);
 		}
 	}
-	
+
 	public void defaultInsert() {
 	}
 }
