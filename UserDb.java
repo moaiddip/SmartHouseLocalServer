@@ -19,13 +19,14 @@ public class UserDb {
 
 	public UserDb(String user_ssn) {
 		this.user_ssn = user_ssn;
-//		testConnection();
+		testConnection();
 
 	}
 
 	private void testConnection() {
 		try {
 			connect();
+			getAllAllowedDevices();
 			// toggleDevice(3, true);
 			// System.out.println("DevicePin: " + getDevicePin(2));
 //			getAllAllowedDevices();

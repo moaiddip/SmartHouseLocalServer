@@ -29,10 +29,12 @@ public class AdminDb {
 
 	private void testConnection() {
 		try {
-			//			setPermission(2, "9910101437", false);
-			getAllPermissionsForUser("9910101437");
+			// setPermission(2, "9910101437", false);
+			// getAllPermissionsForUser("9910101437");
 			// getDviceHistory();
-			// test(); //
+			insertUser("9810101547", "password", "name", "fName", "lName",
+					false);
+			test(); //
 		} catch (Exception e) {
 			System.out.println("Error in testing connection");
 		}
@@ -119,8 +121,9 @@ public class AdminDb {
 				+ "FROM  devices, permissions, users\n"
 				+ "WHERE devices.deviceId = permissions.deviceId\n"
 				+ "AND users.UserSSN  = " + user_ssn + "\n"
-				+ "AND permissions.UserSSN = " + user_ssn + ";"; // later User.ssn
-				
+				+ "AND permissions.UserSSN = " + user_ssn + ";"; // later
+																	// User.ssn
+
 		System.out.println("******Query****** \n" + query
 				+ "\n*****************");
 		try {
@@ -129,7 +132,8 @@ public class AdminDb {
 			System.out.println("Query Succesful");
 			System.out.println("Device Name\t isAllowed");
 			while (rs.next()) {// /////////
-				System.out.println(rs.getString("deviceName") + "\t\t " + rs.getBoolean("isAllowed"));// ////////
+				System.out.println(rs.getString("deviceName") + "\t\t "
+						+ rs.getBoolean("isAllowed"));// ////////
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -167,9 +171,39 @@ public class AdminDb {
 					+ state + " " + date + " " + time);
 		}
 		disconnect();
-	} 
-	
+	}
 
+	public void insertUser(String user_ssn, String password, String name,
+			String fName, String lName, boolean isAdmin) {
+		connect();
+//		String insert = "INSERT INTO users(userSSN, userPassword, userName, userFirstname, userLastname, userIsAdmin, root) \n"
+//				+ "VALUES ("
+//				+ user_ssn
+//				+ ",'"
+//				+ password
+//				+ "','"
+//				+ name
+//				+ "','"
+//				+ fName
+//				+ "','"
+//				+ lName
+//				+ "',"
+//				+ isAdmin
+//				+ ","
+//				+ false
+//				+ ");";
+//		System.out.println("******INSERT****** \n" + insert
+//				+ "\n*****************");
+		try {
+//			st = conn.createStatement();
+//			st.executeUpdate(insert);
+//			System.out.println("Insert Succesful");
+		} catch (Exception e) {
+			System.out.print(e);
+		} finally {
+			disconnect();
+		}
+	}
 	// ********************************************************************************************
 
 	// public ArrayList

@@ -42,9 +42,6 @@ public class User implements Runnable {
 			System.out.println("toggleDevice");
 			ArrayList send = new ArrayList();
 			sendStringOutputToUser(db_queue.udb.toggleDevice(Integer.parseInt(task.get(1).toString()), Boolean.parseBoolean(task.get(2).toString())));// sends arrayList
-			for (int i = 0; i < 1000 ; i++){
-			sendStringOutputToUser("#"+i);
-			}
 		}
 	}
 
