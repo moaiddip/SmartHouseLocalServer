@@ -28,7 +28,7 @@ public class UserDb {
 			connect();
 			// toggleDevice(3, true);
 			// System.out.println("DevicePin: " + getDevicePin(2));
-			getAllAllowedDevices();
+//			getAllAllowedDevices();
 		} catch (Exception e) {
 			System.out.print("Error in testing connection");
 		} finally {
@@ -52,6 +52,7 @@ public class UserDb {
 
 	public void disconnect() {
 		try {
+			st.close();
 			conn.close();
 			System.out.println("Disconnected from database.");
 		} catch (Exception e) {
@@ -209,6 +210,19 @@ public class UserDb {
 		}
 	}
 
-	public void defaultInsert() {
-	}
+//	public void defaultInsert() {
+//		String insert = "INSERT INTO rooms(\n" + "SET deviceState = " + true + "\n"
+//				+ "WHERE deviceId = " + 1;
+//			 table_name (column1,column2,column3,...)
+//			VALUES (value1,value2,value3,...);
+//		System.out.println("******INSERT****** \n" + insert
+//				+ "\n*****************");
+//		try {
+//			st = conn.createStatement();
+//			st.executeUpdate(insert);
+//			System.out.println("Insert Succesful");
+//		} catch (Exception e) {
+//			System.out.print(e);
+//		}
+//	}
 }

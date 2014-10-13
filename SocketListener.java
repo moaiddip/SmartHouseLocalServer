@@ -14,10 +14,11 @@ public class SocketListener {
 	private String SERVER="127.0.0.1";
 	
 	public static void main(String[] args) {
-//		UserDb UsDb = new UserDb(null); //
-		SocketListener sl = new SocketListener();
-		sl.initializingSocket();
-		sl.handlingSocketConnections();
+//		UserDb u = new UserDb(null); //
+		AdminDb adDb = new AdminDb();
+//		SocketListener sl = new SocketListener();
+//		sl.initializingSocket();
+//		sl.handlingSocketConnections();
 	}
 	
 	private void initializingSocket(){//ok
