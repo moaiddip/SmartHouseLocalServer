@@ -20,6 +20,9 @@ public class SocketListener {
 //		sl.initializingSocket();
 //		sl.handlingSocketConnections();
 	}
+	public void newInitSocket(){//Use this method to create the ServerSocket
+		new Thread(new Server(1234, 0, "keystore.jks","password","pwnage12")).start();
+	}
 	
 	private void initializingSocket(){//ok
 		try{//ok
