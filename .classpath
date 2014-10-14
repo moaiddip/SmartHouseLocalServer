@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector.J 5.1/mysql-connector-java-5.1.33-bin.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mat/Downloads/jssc (2)/jssc/jssc.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mat/Downloads/jssc (2)/jssc/CommunicationProtocol.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Tarik/HKR/Termin 5/1. Software Engineering II/CommunicationProtocol.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Tarik/git/mysql-connector-java-5.1.33-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Tarik/HKR/Termin 5/1. Software Engineering II/jssc.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>
