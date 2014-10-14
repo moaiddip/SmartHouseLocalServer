@@ -65,7 +65,7 @@ public class SocketListener {
 		String ipAdress = socket.getRemoteSocketAddress().toString();
 		int start = 0, end = 0;
 		try {
-		ip = InetAddress.getLocalHost();
+			ip = InetAddress.getLocalHost();
 			for (int i = 0; i < socket.getLocalSocketAddress().toString()
 					.length(); i++) {
 				if (ipAdress.charAt(i) == '/') {
