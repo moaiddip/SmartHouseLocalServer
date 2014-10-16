@@ -32,9 +32,9 @@ public class AdminDb {
 			// setPermission(2, "9910101437", false);
 			// getAllPermissionsForUser("9910101437");
 			// getDviceHistory();
-			insertUser("9810101547", "password", "name", "fName", "lName",
-					false);
-			test(); //
+			//addRoom("Basement");
+			//insertUser("9810101547", "password", "name", "fName", "lName", false);
+//			test(); //
 		} catch (Exception e) {
 			System.out.println("Error in testing connection");
 		}
@@ -176,35 +176,90 @@ public class AdminDb {
 	public void insertUser(String user_ssn, String password, String name,
 			String fName, String lName, boolean isAdmin) {
 		connect();
-//		String insert = "INSERT INTO users(userSSN, userPassword, userName, userFirstname, userLastname, userIsAdmin, root) \n"
-//				+ "VALUES ("
-//				+ user_ssn
-//				+ ",'"
-//				+ password
-//				+ "','"
-//				+ name
-//				+ "','"
-//				+ fName
-//				+ "','"
-//				+ lName
-//				+ "',"
-//				+ isAdmin
-//				+ ","
-//				+ false
-//				+ ");";
-//		System.out.println("******INSERT****** \n" + insert
-//				+ "\n*****************");
+		// String insert =
+		// "INSERT INTO users(userSSN, userPassword, userName, userFirstname, userLastname, userIsAdmin, root) \n"
+		// + "VALUES ("
+		// + user_ssn
+		// + ",'"
+		// + password
+		// + "','"
+		// + name
+		// + "','"
+		// + fName
+		// + "','"
+		// + lName
+		// + "',"
+		// + isAdmin
+		// + ","
+		// + false
+		// + ");";
+		// System.out.println("******INSERT****** \n" + insert
+		// + "\n*****************");
+		// try {
+		// st = conn.createStatement();
+		// st.executeUpdate(insert);
+		// System.out.println("Insert Succesful");
+		// } catch (Exception e) {
+		// System.out.print(e);
+		// } finally {
+		insertDefaultPermission();
+		disconnect();
+		// }
+	}
+
+	// ********************************************************************************************
+	private void insertDefaultPermission() {
+		// String insert =
+		// "INSERT INTO users(userSSN, userPassword, userName, userFirstname, userLastname, userIsAdmin, root) \n"
+		// + "VALUES ("
+		// + user_ssn
+		// + ",'"
+		// + password
+		// + "','"
+		// + name
+		// + "','"
+		// + fName
+		// + "','"
+		// + lName
+		// + "',"
+		// + isAdmin
+		// + ","
+		// + false
+		// + ");";
+		// System.out.println("******INSERT****** \n" + insert
+		// + "\n*****************");
+		// try {
+		// st = conn.createStatement();
+		// st.executeUpdate(insert);
+		// System.out.println("Insert Succesful");
+		// } catch (Exception e) {
+		// System.out.print(e);
+		//
+		// }
+	}
+
+	// ********************************************************************************************
+
+	public void addDevice() {
+
+	}
+
+	public void addRoom(String roomName) {
+		connect();
+		String insert = "INSERT INTO rooms(roomId,roomName)\n"
+				+ "VALUES (DEFAULT,'" + roomName + "');";
+		System.out.println("******INSERT****** \n" + insert
+				+ "\n*****************");
 		try {
-//			st = conn.createStatement();
-//			st.executeUpdate(insert);
-//			System.out.println("Insert Succesful");
+			st = conn.createStatement();
+			st.executeUpdate(insert);
+			System.out.println("Insert Succesful");
 		} catch (Exception e) {
 			System.out.print(e);
 		} finally {
 			disconnect();
 		}
 	}
-	// ********************************************************************************************
 
 	// public ArrayList
 	// getDviceHistory2() throws

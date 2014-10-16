@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
+
 public class SocketListener {
 	private ServerSocket serversocket=null;
 	private Socket socket=null;
@@ -15,19 +16,17 @@ public class SocketListener {
 	
 	public static void main(String[] args) {
 //		UserDb u = new UserDb(null); //
-		AdminDb adDb = new AdminDb();
-//		SocketListener sl = new SocketListener();
-//		sl.initializingSocket();
-//		sl.handlingSocketConnections();
-	}
-	public void newInitSocket(){//Use this method to create the ServerSocket
-		new Thread(new Server(1234, 0, "keystore.jks","password","pwnage12")).start();
+//		AdminDb adDb = new AdminDb();
+		SocketListener sl = new SocketListener();
+		sl.initializingSocket();
+		sl.handlingSocketConnections();
 	}
 	
 	private void initializingSocket(){//ok
 		try{//ok
 			System.out.println("initializingSocket()  - once");
 			serversocket = new ServerSocket(PORT);
+			
 			System.out.println("The Local Server of the SmartHouse runs and is operative\n\n\n");
 			}catch(Exception ex){
 			ex.printStackTrace();

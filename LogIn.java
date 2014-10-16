@@ -46,7 +46,7 @@ public class LogIn implements Runnable {
 					User user=new User(socket,"9310101337");
 			        Thread login =new Thread(user,"ssn");
 			        login.start();
-			        Thread.currentThread().stop();//ok
+//			        Thread.currentThread().stop();//ok
 				}else{
 					ArrayList result = new ArrayList();
 					result.add("Wrong password or username");
