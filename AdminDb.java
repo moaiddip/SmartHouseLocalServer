@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.jar.Attributes.Name;
-import com.mysql.fabric.xmlrpc.base.Data;
 
 public class AdminDb {
 	private String url = "jdbc:mysql://127.0.0.1:3306/";
@@ -32,13 +31,7 @@ public class AdminDb {
 			// setPermission(2, "9910101437", false);
 			getAllPermissionsForUser("9910101437");
 			// getDviceHistory();
-<<<<<<< HEAD
-			//addRoom("Basement");
-			//insertUser("9810101547", "password", "name", "fName", "lName", false);
-//			test(); //
-=======
-			// test(); //
->>>>>>> origin/master
+
 		} catch (Exception e) {
 			System.out.println("Error in testing connection");
 		}
@@ -168,7 +161,6 @@ public class AdminDb {
 		}
 		disconnect();
 	}
-<<<<<<< HEAD
 
 	public void insertUser(String user_ssn, String password, String name,
 			String fName, String lName, boolean isAdmin) {
@@ -257,29 +249,4 @@ public class AdminDb {
 			disconnect();
 		}
 	}
-
-	// public ArrayList
-	// getDviceHistory2() throws
-	// SQLException { // queryString =
-	// "select * from deviceHistory"; // st
-	// = conn.createStatement(); // rs =
-	// st.executeQuery(queryString); //
-	// ArrayList al= new ArrayList(); //
-	// while (rs.next()) { //
-	// al.add(rs.getInt("entryId")); // // }
-	// return al; // }
-
-=======
-	// ********************************************************************************************
-//	 public ArrayList
-//	 getDviceHistory2() throws
-//	 SQLException { // queryString =
-//	 "select * from deviceHistory"; // st
-//	 = conn.createStatement(); // rs =
-//	 st.executeQuery(queryString); //
-//	 ArrayList al= new ArrayList(); //
-//	 while (rs.next()) { //
-//	 al.add(rs.getInt("entryId")); // // }
-//	 return al; // }
->>>>>>> origin/master
 }

@@ -5,8 +5,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import Protocols.Server;
-
+//import Protocols.Server;
 
 public class SocketListener {
 	private ServerSocket serversocket = null;
@@ -15,39 +14,29 @@ public class SocketListener {
 	private String SERVER = "127.0.0.1";
 
 	public static void main(String[] args) {
-<<<<<<< HEAD
+
 //		UserDb u = new UserDb(null); //
 //		AdminDb adDb = new AdminDb();
 		SocketListener sl = new SocketListener();
 		sl.initializingSocket();
 		sl.handlingSocketConnections();
-=======
-		// UserDb u = new UserDb(null); //
-		AdminDb adDb = new AdminDb();
-		// SocketListener sl = new SocketListener();
-		// sl.initializingSocket();
-		// sl.handlingSocketConnections();
+
 	}
 
-	public void newInitSocket() {// Use this method to create the ServerSocket
-		new Thread(new Server(1234, 0, "keystore.jks", "password", "pwnage12"))
-				.start();
->>>>>>> origin/master
-	}
+//	public void newInitSocket() {// Use this method to create the ServerSocket
+//		new Thread(new Server(1234, 0, "keystore.jks", "password", "pwnage12"))
+//				.start();
+//	}
 
 	private void initializingSocket() {// ok
 		try {// ok
 			System.out.println("initializingSocket()  - once");
 			serversocket = new ServerSocket(PORT);
-<<<<<<< HEAD
+
 			
 			System.out.println("The Local Server of the SmartHouse runs and is operative\n\n\n");
 			}catch(Exception ex){
-=======
-			System.out
-					.println("The Local Server of the SmartHouse runs and is operative\n\n\n");
-		} catch (Exception ex) {
->>>>>>> origin/master
+
 			ex.printStackTrace();
 			System.out
 					.println("serversocket = new ServerSocket(PORT) - FAILED in CLASS SocketListener in method initilizingSocket()");
@@ -94,12 +83,7 @@ public class SocketListener {
 		} catch (UnknownHostException e1) {
 			e1.printStackTrace();
 		}
-<<<<<<< HEAD
-    	return ipAdress.substring(start, end);
-    }
-}
-=======
 		return ipAdress.substring(start, end);
 	}
 }
->>>>>>> origin/master
+
