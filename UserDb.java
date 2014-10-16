@@ -3,13 +3,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class UserDb {
-	private String ipAdress = "localhost";
-	private String port = "3307";
-	private String url = "jdbc:mysql://" + ipAdress + ":" + port + "/";
+	// WE HAVE TO CHANGE THIS
+	private String url = "jdbc:mysql://localhost:3307/";
 	private String dbName = "localdatabase";
-	private String driver = "com.mysql.jdbc.Driver";
+	private String mySqlDriver = "com.mysql.jdbc.Driver";
 	private String userName = "root";
 	private String password = "root321";
 	private Connection conn;
@@ -25,11 +25,13 @@ public class UserDb {
 
 	private void testConnection() {
 		try {
-			connect();
-			getAllAllowedDevices();
+			// getAllAllowedDevices();
+			checkDevice(4);
+			// checkAllDevices();
+			// testDevice(3);
 			// toggleDevice(3, true);
 			// System.out.println("DevicePin: " + getDevicePin(2));
-//			getAllAllowedDevices();
+			// getAllAllowedDevices();
 		} catch (Exception e) {
 			System.out.print("Error in testing connection");
 		} finally {
@@ -44,6 +46,7 @@ public class UserDb {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager
 					.getConnection(url + dbName, userName, password);
+			st = conn.createStatement();
 			System.out.println("Connected!!!");
 		} catch (Exception e) {
 			System.out.print("Couldn't connect.");
@@ -62,32 +65,29 @@ public class UserDb {
 		}
 	}
 
-	public String toggleDevice(int deviceID, boolean state) {
+	public String[] toggleDevice(int deviceID, boolean state) {
 		connect();
-		System.out.println("entered ToggleDevice");
-		// Need to insert condition so user can only users with permission can
-		String update1 = "UPDATE devices\n" + "SET deviceState = " + state
+		String[] returnArray = null;
+		String query = "SELECT Permissions.isAllowed, Devices.deviceName, Devices.deviceState\n"
+				+ "FROM Permissions\n"
+				+ "WHERE userssn = "
+				+ user_ssn
 				+ "\n"
-				+ "WHERE deviceId =(Select  deviceId \n"
-				+ "FROM Permissions \n"
-				+ "WHERE Permissions.userSSN = '9910101437' \n" // laterUser.SSN
-				+ "AND Permissions.deviceId = " + deviceID + "\n"
-				+ "AND Permissions.isAllowed = true);";
-
-		String query = "SELECT isAllowed\n" + "FROM permissions\n"
-				+ "WHERE userssn = '9910101437'\n" // Later user.ssn
 				+ "AND deviceId = " + deviceID + ";";
 		String update = "UPDATE devices\n" + "SET deviceState = " + state
 				+ "\n" + "WHERE deviceId = " + deviceID;
 		System.out.println("******UPDATE****** \n" + update
 				+ "\n******************");
 		try {
-			st = conn.createStatement();
+
 			res = st.executeQuery(query);
 			res.next();
 			boolean isAllowed = res.getBoolean("isAllowed");
+			returnArray = new String[] { res.getString("deviceName"),
+					Boolean.toString(res.getBoolean("deviceState")) };
 			if (isAllowed == true) {
-				// arduino Togglemethod here
+				// ///////////////////////////////////////////////// arduino
+				// Togglemethod here
 				st.executeUpdate(update);
 				addDeviceHistory(deviceID, state);
 			}
@@ -97,7 +97,103 @@ public class UserDb {
 		} finally {
 			disconnect();
 		}
-		return "OKEY";
+		return returnArray;
+	}
+
+	public String[] checkDevice(int deviceID) {
+		connect();
+		String[] returnArray = null;
+		String query = "SELECT Permissions.isAllowed, Devices.deviceName, Devices.deviceState\n"
+				+ "FROM Permissions, Devices\n"
+				+ "WHERE Permissions.userssn = " + user_ssn + "\n" 
+				+ "AND Permissions.deviceId = " + deviceID + ";";
+		try {
+			res = st.executeQuery(query);
+			res.next();
+			// boolean isAllowed = res.getBoolean("isAllowed");
+			// if (isAllowed == true) {
+			returnArray = new String[] { res.getString("Devices.deviceName"),
+					Boolean.toString(res.getBoolean("Devices.deviceState")) };
+			// }
+			System.out.println("Update Succesful");
+		} catch (Exception e) {
+			System.out.print(e);
+		} finally {
+			disconnect();
+		}
+		return returnArray;
+	}
+
+	public String[] checkAllDevices() {
+		String[] returnArr = null;
+		ArrayList<String> returnList = new ArrayList<String>();
+		connect();
+		String query = "SELECT Permissions.isAllowed, Devices.deviceName, Devices.deviceState\n"
+				+ "FROM Permissions, Devices\n"
+				+ "WHERE userssn = "
+				+ user_ssn
+				+ ";";
+		try {
+
+			res = st.executeQuery(query);
+			while (res.next()) {// /////////
+				// boolean isAllowed = res.getBoolean("isAllowed");
+				// if (isAllowed == true) {
+				returnList.add(res.getString("deviceName"));
+				returnList.add(Boolean.toString(res.getBoolean("deviceState")));
+				// }
+			}
+			System.out.println("Update Succesful");
+		} catch (Exception e) {
+			System.out.print(e);
+		} finally {
+			disconnect();
+		}
+		if (!returnList.isEmpty()) {
+			returnArr = new String[returnList.size()];
+			for (int i = 0; i < returnList.size(); i++) {
+				returnArr[i] = returnList.get(1);
+			}
+		}
+		return returnArr;
+	}
+
+	public String[] testDevice(int deviceID) {
+		connect();
+		String[] returnArray = new String[2];
+
+		String query = "SELECT Permissions.isAllowed, Devices.deviceName, Devices.deviceState\n"
+				+ "FROM Permissions, Devices\n"
+				+ "WHERE userssn = "
+				+ user_ssn
+				+ "\n" + "AND Devices.deviceId = " + deviceID + ";";
+		String updateOn = "UPDATE devices\n" + "SET deviceState = true " + "\n"
+				+ "WHERE deviceId = " + deviceID;
+		String updateOff = "UPDATE devices\n" + "SET deviceState = false "
+				+ "\n" + "WHERE deviceId = " + deviceID;
+		try {
+
+			res = st.executeQuery(query);
+			res.next();
+			boolean isAllowed = res.getBoolean("isAllowed");
+			returnArray[0] = res.getString("deviceName");
+			if (isAllowed == true) {
+				st.executeUpdate(updateOn);
+				// //////////////////////////Arduino method here for turning on
+				wait(100);
+				st.executeUpdate(updateOff);
+				// //////////////////////////Arduino method here for turning off
+				returnArray[1] = "true";
+			} else {
+				returnArray[1] = "false";
+			}
+		} catch (Exception e) {
+			returnArray[1] = "false";
+			System.out.print(e);
+		} finally {
+			disconnect();
+		}
+		return returnArray;
 	}
 
 	private void addDeviceHistory(int deviceID, boolean state) {
@@ -110,7 +206,7 @@ public class UserDb {
 		System.out.println("******UPDATE****** \n" + query
 				+ "\n*****************");
 		try {
-			st = conn.createStatement();
+
 			res = st.executeQuery(query);// //////////
 			res.next();
 			System.out.println("Query Succesful");
@@ -130,12 +226,13 @@ public class UserDb {
 				+ "FROM rooms, devices, permissions\n"
 				+ "WHERE rooms.roomId = devices.roomId\n"
 				+ "AND devices.deviceId = permissions.deviceId\n"
-				+ "AND permissions.UserSSN = '9310101337'\n" // later User.ssn
+				+ "AND permissions.UserSSN = " + user_ssn + "\n" // later
+																	// User.ssn
 				+ "AND permissions.isAllowed = true" + ";";
 		System.out.println("******UPDATE****** \n" + query
 				+ "\n*****************");
 		try {
-			st = conn.createStatement();
+
 			res = st.executeQuery(query);// //////////
 			System.out.println("Query Succesful");
 			while (res.next()) {// /////////
@@ -178,14 +275,12 @@ public class UserDb {
 	// return dt.format(date);
 	// }
 
-	
 	// FOR MAKING OF NEW QUERIES/UPDATES/INSERTS
 	public void defaultQuery() {
 		String query = "SELECT roomName " + "From rooms";
 		System.out.println("******UPDATE****** \n" + query
 				+ "\n*****************");
 		try {
-			st = conn.createStatement();
 
 			res = st.executeQuery(query);// //////////
 			while (res.next()) {// /////////
@@ -203,7 +298,7 @@ public class UserDb {
 		System.out.println("******UPDATE****** \n" + update
 				+ "\n*****************");
 		try {
-			st = conn.createStatement();
+
 			st.executeUpdate(update);
 			System.out.println("Update Succesful");
 		} catch (Exception e) {
@@ -211,19 +306,20 @@ public class UserDb {
 		}
 	}
 
-//	public void defaultInsert() {
-//		String insert = "INSERT INTO rooms(\n" + "SET deviceState = " + true + "\n"
-//				+ "WHERE deviceId = " + 1;
-//			 table_name (column1,column2,column3,...)
-//			VALUES (value1,value2,value3,...);
-//		System.out.println("******INSERT****** \n" + insert
-//				+ "\n*****************");
-//		try {
-//			st = conn.createStatement();
-//			st.executeUpdate(insert);
-//			System.out.println("Insert Succesful");
-//		} catch (Exception e) {
-//			System.out.print(e);
-//		}
-//	}
+	// public void defaultInsert() {
+	// String insert = "INSERT INTO rooms(\n" + "SET deviceState = " + true +
+	// "\n"
+	// + "WHERE deviceId = " + 1;
+	// table_name (column1,column2,column3,...)
+	// VALUES (value1,value2,value3,...);
+	// System.out.println("******INSERT****** \n" + insert
+	// + "\n*****************");
+	// try {
+	// st = conn.createStatement();
+	// st.executeUpdate(insert);
+	// System.out.println("Insert Succesful");
+	// } catch (Exception e) {
+	// System.out.print(e);
+	// }
+	// }
 }
