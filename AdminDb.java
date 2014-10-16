@@ -1,3 +1,4 @@
+import com.mysql.fabric.xmlrpc.base.Data;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -7,15 +8,14 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.jar.Attributes.Name;
-
 import com.mysql.fabric.xmlrpc.base.Data;
 
 public class AdminDb {
-	private String url = "jdbc:mysql://127.0.0.1:3307/";
+	private String url = "jdbc:mysql://127.0.0.1:3306/";
 	private String dbName = "localdatabase";
 	private String mySqlDriver = "com.mysql.jdbc.Driver";
 	private String userName = "root";
-	private String password = "root321";
+	private String password = "cnncnn22";
 	private Connection conn;
 	private Statement st;
 	private static ResultSet rs;
@@ -30,11 +30,15 @@ public class AdminDb {
 	private void testConnection() {
 		try {
 			// setPermission(2, "9910101437", false);
-			// getAllPermissionsForUser("9910101437");
+			getAllPermissionsForUser("9910101437");
 			// getDviceHistory();
+<<<<<<< HEAD
 			//addRoom("Basement");
 			//insertUser("9810101547", "password", "name", "fName", "lName", false);
 //			test(); //
+=======
+			// test(); //
+>>>>>>> origin/master
 		} catch (Exception e) {
 			System.out.println("Error in testing connection");
 		}
@@ -55,7 +59,6 @@ public class AdminDb {
 	}
 
 	// **********************************************************************************************
-
 	public void disconnect() {
 		try {
 			st.close();
@@ -66,8 +69,7 @@ public class AdminDb {
 			System.out.println(e);
 		}
 	} //
-
-	// **************************************************************************************
+		// **************************************************************************************
 
 	public boolean getDeviceState(int inDviceId) throws SQLException {
 		connect();
@@ -84,8 +86,7 @@ public class AdminDb {
 		disconnect();
 		return state;
 	} //
-
-	// ********************************************************************************************
+		// ********************************************************************************************
 
 	public void setPermission(int dviceId, String userSSN, boolean isAllowed)
 			throws SQLException {
@@ -112,8 +113,7 @@ public class AdminDb {
 			disconnect();
 		}
 	} //
-
-	// ********************************************************************************************
+		// ********************************************************************************************
 
 	public boolean getAllPermissionsForUser(String user_ssn) {
 		connect();
@@ -122,8 +122,7 @@ public class AdminDb {
 				+ "WHERE devices.deviceId = permissions.deviceId\n"
 				+ "AND users.UserSSN  = " + user_ssn + "\n"
 				+ "AND permissions.UserSSN = " + user_ssn + ";"; // later
-																	// User.ssn
-
+		// User.ssn
 		System.out.println("******Query****** \n" + query
 				+ "\n*****************");
 		try {
@@ -144,22 +143,19 @@ public class AdminDb {
 		boolean state = true;
 		return state;
 	} //
+		// ********************************************************************************************
 
-	// ********************************************************************************************
-
-	public ResultSet getDviceHistory() throws SQLException {
+	public ResultSet getDeviceHistory() throws SQLException {
 		connect();
-
 		queryString = "select * from deviceHistory";
 		st = conn.createStatement();
 		rs = st.executeQuery(queryString);
 		return rs;
 	} //
-
-	// ********************************************************************************************
+		// ********************************************************************************************
 
 	public void test() throws SQLException {
-		ResultSet result = getDviceHistory();
+		ResultSet result = getDeviceHistory();
 		while (rs.next()) {
 			int entryId = result.getInt("entryId");
 			String userSSN = result.getString("userSSN");
@@ -172,6 +168,7 @@ public class AdminDb {
 		}
 		disconnect();
 	}
+<<<<<<< HEAD
 
 	public void insertUser(String user_ssn, String password, String name,
 			String fName, String lName, boolean isAdmin) {
@@ -272,4 +269,17 @@ public class AdminDb {
 	// al.add(rs.getInt("entryId")); // // }
 	// return al; // }
 
+=======
+	// ********************************************************************************************
+//	 public ArrayList
+//	 getDviceHistory2() throws
+//	 SQLException { // queryString =
+//	 "select * from deviceHistory"; // st
+//	 = conn.createStatement(); // rs =
+//	 st.executeQuery(queryString); //
+//	 ArrayList al= new ArrayList(); //
+//	 while (rs.next()) { //
+//	 al.add(rs.getInt("entryId")); // // }
+//	 return al; // }
+>>>>>>> origin/master
 }

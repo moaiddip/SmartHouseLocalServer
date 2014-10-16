@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.*;
-
 
 public class Admin implements Runnable {
 	DataInputStream serverInput;// PRELIMINARY PROTOCOL FUNCTION
@@ -15,14 +15,14 @@ public class Admin implements Runnable {
 
 	private boolean userConnected = false;
 	private Socket socket = null;
-	
-	public void Admin(){
+
+	public void Admin() {
 		this.socket = socket;
 		this.userConnected = true;
 		this.user_ssn = user_ssn;
 		db_queue = new DbQueue("Admin", this.user_ssn);
 	}
-	
+
 	public void run() {// As long as user is connected the taskhandler will wait
 		// for instructions from user to calculate and retrun
 		// answer
@@ -38,15 +38,35 @@ public class Admin implements Runnable {
 
 	private void taskHandler(ArrayList task) {
 		System.out.println("taskHandler");
-		if (task.get(0).equals("amdmin metod")) {// reacts on if-stmt
+		if (task.get(0).equals("getDeviceState")) {// reacts on if-stmt
+			try {
+				db_queue.adb.getDeviceState(Integer.parseInt(task.get(1)
+						.toString()));
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+			if (task.get(0).equals("getAllPermissionsForUser")) {
+				db_queue.adb.getAllPermissionsForUser(user_ssn);
+			}
+			if (task.get(0).equals("getDeviceHistory")) {
+				try {
+					db_queue.adb.getDeviceHistory();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 			ArrayList send = new ArrayList();
-			//sendStringOutputToUser(db_queue.adb.metod(parameter));// sends arrayList
+			// sendStringOutputToUser(db_queue.adb.metod(parameter));// sends
+			// arrayList
 		}
 	}
 
 	private String getStringInputFromUser() {
 		System.out.println(Thread.currentThread().getName()
-				+ " ï¿½r inne i getInputFromUser() ");
+				+ " är inne i getInputFromUser() ");
 		String input = "";
 		try {
 			serverInput = new DataInputStream(socket.getInputStream());
@@ -54,20 +74,23 @@ public class Admin implements Runnable {
 			return input;
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println("\n\nERROR - Class: User(Local Server)\nMethod: private String getStringInputFromUser()");
+			System.out
+					.println("\n\nERROR - Class: User(Local Server)\nMethod: private String getStringInputFromUser()");
 		}
 		return input;
 	}
 
 	private void sendStringOutputToUser(String output) {
-		System.out.println(Thread.currentThread().getName()+ " ï¿½r inne i sendOutputToUser(String output) ");
+		System.out.println(Thread.currentThread().getName()
+				+ "  Är inne i sendOutputToUser(String output) ");
 		try {
 			serverOutput = new DataOutputStream(socket.getOutputStream());
 			serverOutput.writeUTF(output);
 			serverOutput.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println("\n\nERROR - Class: User(Local Server)\nMethod: private String sendStringOutputToUser(String output)");
+			System.out
+					.println("\n\nERROR - Class: Admin(Local Server)\nMethod: private String sendStringOutputToAdmin(String output)");
 		}
 	}
 
@@ -92,4 +115,3 @@ public class Admin implements Runnable {
 		return stringList;
 	}
 }
-
