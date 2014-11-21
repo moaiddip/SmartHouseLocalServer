@@ -4,33 +4,24 @@ import java.io.IOException;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.*;
 
 
-public class Admin {
-	DataInputStream serverInput;// PRELIMINARY PROTOCOL FUNCTION
-	DataOutputStream serverOutput;// PRELIMINARY PROTOCOL FUNCTION
+public class Admin extends User{
 	DbQueue db_queue = null;
 	private String user_ssn = null;
-	static ArdConnector ar;
-	
-	private static final String ARDUINO_COMPORT = "COM26";
 
 	private boolean userConnected = false;
 	
-	public Admin(){
+	public void Admin() {
+		
 		this.userConnected = true;
-		db_queue = new DbQueue("DEFAULT Admin");
-		System.out.println("");
-		ar = new ArdConnector(ARDUINO_COMPORT);
-		ar.start();
-		
-	}		
-		
-		
+		this.user_ssn = user_ssn;
+		db_queue = new DbQueue("Admin");
+	}
 
-	
-	public void taskHandler(ArrayList task){
+	public String taskHandler(ArrayList task, String roomId){
 		System.out.println("taskHandler");
 		for(int i=0;i<task.size();i++){
 			System.out.println("task.get(i)=="+task.get(i));
@@ -40,7 +31,7 @@ public class Admin {
 			String prefix = db_queue.udb.getDeviceAbr(Integer.parseInt(task.get(1).toString()));
 			String suffix;
 			boolean bool = Boolean.parseBoolean(task.get(2).toString());
-			//suffix = bool == true ? "on" : "off";
+			//suffix = boolean == true ? "on" : "off";
 			if(bool == true){
 				suffix = "on";
 			} else {
@@ -50,14 +41,12 @@ public class Admin {
 			System.out.println("cmd: " + cmd);
 			System.out.println(System.currentTimeMillis() - startTime);
 
-			ar.setCommand(cmd);
 			return "toggleDevice";
 			
 			
-	    }else if(task.get(0).equals("checkDevice") && task.isEmpty()==false && task.size()==2)
-	    {
-		
-	    	String print=converArrayListToString(db_queue.adb.checkDevice(Integer.parseInt(task.get(1).toString())));
+	    }else if(task.get(0).equals("checkDevice") && task.isEmpty()==false && task.size()==2){
+
+	    	String print=convertArrayListToString(db_queue.udb.checkDevice(Integer.parseInt(task.get(1).toString())));
 		
 		
 		System.out.println("checkDevice("+Integer.parseInt(task.get(1).toString())+")=="+print);
@@ -66,16 +55,17 @@ public class Admin {
 		
 	}else if(task.get(0).equals("testDevice") && task.isEmpty()==false && task.size()==2)
 	{
-		return convertArrayListToString(db_queue.adb.testDevice(Integer.parseInt(task.get(1).toString())));
+		return convertArrayListToString(db_queue.udb.testDevice(Integer.parseInt(task.get(1).toString())));
 		
 	}else if(task.get(0).equals("checkAllDevices") && task.isEmpty()==false && task.size()==1){
 		   
-		return convertArrayListToString(db_queue.adb.checkAllDevices());
+		return convertArrayListToString(db_queue.udb.checkAllDevices());
 	}
 	
 	    return("Totally Wrong:");
 	
-	    if (task.get(0).equals("getDeviceState")) {// reacts on if-stmt
+
+	if (task.get(0).equals("getDeviceState")) {// reacts on if-stmt
 			try {
 				
 				db_queue.adb.getDeviceState(Integer.parseInt(task.get(1).toString()));
@@ -85,39 +75,34 @@ public class Admin {
 
 				e.printStackTrace();
 			}
-	
-			if (task.get(0).equals("getAllPermissionsForUser")) {
+	}else if (task.get(0).equals("getAllPermissionsForUser")) {
 				db_queue.adb.getAllPermissionsForUser(user_ssn);
-				db_queue.adb((int)task.get(0),(String)task.get(1),(String)task.get(2),(String)task.get(3),(String)task.get(4),(boolean)task.get(5),(double)task.get(6));
+				db_queue.adb.insertUser((String)task.get(0),(String)task.get(1),(String)task.get(2),(String)task.get(3),(String)task.get(4),(String)task.get(5),(String)task.get(6),(String)task.get(7),(String)task.get(8),(String)task.get(9),(String)task.get(10),(boolean)task.get(11));;
 				
-			}
-			if (task.get(0).equals("getDeviceHistory")) {
-
-					db_queue.adb.getDeviceHistory();
-				} 
-			if(task.get(0).equals("setPermission")){
-				db_queue.adb.setPermission(user_ssn);
+	}else if (task.get(0).equals("getDeviceHistory")) {
+                db_queue.adb.getDeviceHistory();
+                
+	}else if(task.get(0).equals("setPermission")){
+				db_queue.adb.setPermission(0, user_ssn, userConnected); 
+				db_queue.adb.insertUser(((String)task.get(0),(String)task.get(1),(String)task.get(2),(String)task.get(3),(String)task.get(4),(String)task.get(5),(String)task.get(6),(String)task.get(7),(String)task.get(8),(String)task.get(9),(String)task.get(10),(boolean)task.get(11));
 				
-				db_queue.adb((int)task.get(0),(String)task.get(1),(String)task.get(2),(String)task.get(3),(String)task.get(4),(boolean)task.get(5),(double)task.get(6));
-			}
-				
-			if(task.get(0).equals("addRoom")){
-				db_queue.adb.addRoom(roomName);
-				
-					}
-				}
-				
-				
-				
-				
-			}
-	    
-	    
+	}else if(task.get(0).equals("insertUser")){
+		
+		        db_queue.adb.insertUser((String)task.get(0),(String)task.get(1),(String)task.get(2),(String)task.get(3),(String)task.get(4),(String)task.get(5),(String)task.get(6),(String)task.get(7),(String)task.get(8),(String)task.get(9),(String)task.get(10),(boolean)task.get(11));
+	
+	}else if(task.get(0).equals("insertRoom")){
+		
+		        db_queue.adb.insertRoom((String)task.get(0));
+		
+	
+	}else if(task.get(0).equals("insertDevice")){
+		
+		        db_queue.adb.insertDevice((int)task.get(0),(String)task.get(1),(String)task.get(2),(int)task.get(3),(String)task.get(4),(String)task.get(5));
+	}
 }
-	
-	
-	
-	private String convertArrayListToString(ArrayList arrayList) {
+				
+			
+	public String convertArrayListToString(ArrayList arrayList) {
 		String stringList = "";
 		int lastSeparator = -1;
 		for (int i = 0; i < arrayList.size(); i++) {
