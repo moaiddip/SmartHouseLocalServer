@@ -117,8 +117,13 @@ public class UserDb {
 				res.next();
 				toggleList.add(res.getString("device.name"));
 				toggleList.add(res.getInt("device.state"));
-				insertDeviceHistory(deviceID, state);
-			}
+				if(state==1){
+					insertDeviceHistory("ACTIVATED",deviceID, state);	
+				} else if (state ==0) {
+					insertDeviceHistory("DEACTIVATED",deviceID, state);
+					
+				}
+				}
 			if (printMsg) {
 				System.out.println("Update Succesful");
 			}
@@ -160,7 +165,7 @@ public class UserDb {
 	 */
 	public ArrayList getRooms() {
 		ArrayList roomInfo = new ArrayList<String>();
-		String query = "SELECT room.id, room.name, room.imagePath \n"//
+		String query = "SELECT room.id, room.name \n"//
 				+ "FROM room;";
 		if (printMsg) {
 			System.out.println("******UPDATE****** \n" + query
@@ -174,7 +179,6 @@ public class UserDb {
 			while (res.next()) {
 				roomInfo.add(String.valueOf(res.getInt("room.id")));
 				roomInfo.add(res.getString("room.name"));
-				roomInfo.add(res.getString("room.imagePath"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -184,40 +188,40 @@ public class UserDb {
 
 	}
 
-	/*
-	 * QUERY
-	 * created by Mathias
-	 */
-	public int getDevicePin(int deviceID) {
-		String query = "SELECT device.pin \n" + "FROM device \n"
-				+ "WHERE device.id = " + deviceID + ";";
-		if (printMsg) {
-			System.out.println("******UPDATE****** \n" + query
-					+ "\n*****************");
-		}
-		try {
-			res = st.executeQuery(query);// //////////
-			res.next();
-			if (printMsg) {
-				System.out.println("Query Succesful");
-			}
-			return res.getInt("device.pin");
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.print(e);
-		}
-		return -1;
-	}
+//	/*
+//	 * QUERY
+//	 * created by Mathias
+//	 */
+//	public int getDevicePin(int deviceID) {
+//		String query = "SELECT device.pin \n" + "FROM device \n"
+//				+ "WHERE device.id = " + deviceID + ";";
+//		if (printMsg) {
+//			System.out.println("******UPDATE****** \n" + query
+//					+ "\n*****************");
+//		}
+//		try {
+//			res = st.executeQuery(query);// //////////
+//			res.next();
+//			if (printMsg) {
+//				System.out.println("Query Succesful");
+//			}
+//			return res.getInt("device.pin");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			System.out.print(e);
+//		}
+//		return -1;
+//	}
 
 	/*
 	 * QUERY
 	 * created by Mathias
 	 */
-	public void getAllAllowedDevices() {
-		String query = "SELECT device.name, room.name, device.state\n"
-				+ "FROM room, device, permission\n"
-				+ "WHERE room.id = device.id\n"
-				+ "AND device.id = permission.id\n"
+	public ArrayList getAllAllowedDevices() {
+		ArrayList<Object> returnArray = new ArrayList<Object>();
+		String query = "SELECT device.name, device.state, device.imagePath \n"
+				+ "FROM device, permission\n"
+				+ "WHERE device.id = permission.id\n"
 				+ "AND permission.userSSN = '9310101337'\n" // later User.ssn
 				+ "AND permission.isAllowed = true" + ";";
 		if (printMsg) {
@@ -230,14 +234,46 @@ public class UserDb {
 				System.out.println("Query Succesful");
 			}
 			while (res.next()) {
-				System.out.println(res.getString("device.name") + " "
-						+ res.getString("room.name") + " "
-						+ res.getBoolean("device.state"));
+				if(printMsg){System.out.println(res.getString("device.name") + " "
+						+ res.getInt("device.state") + " "
+						+ res.getString("device.imagePath"));
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.print(e);
 		}
+		return returnArray;
+	}
+	/*
+	 * QUERY
+	 * created by Mathias
+	 */
+	public ArrayList getAllCommands() {
+		ArrayList<Object> returnArray = new ArrayList<Object>();
+		String query = "SELECT *\n"
+				+ "FROM command;";
+				if (printMsg) {
+					System.out.println("******QUERY****** \n" + query
+					+ "\n*****************");
+		}
+		try {
+			res = st.executeQuery(query);
+			if (printMsg) {
+				System.out.println("Query Succesful");
+			}
+			while (res.next()) {
+				if(printMsg){System.out.println(res.getString("command.name") + " "
+						+ res.getInt("command.priority"));
+				}
+				returnArray.add(res.getString("command.name"));
+				returnArray.add(String.valueOf(res.getInt("command.priority")));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.print(e);
+		}
+		return returnArray;
 	}
 
 	/*
@@ -245,10 +281,9 @@ public class UserDb {
 	 * created by Mathias
 	 */
 	public void getAllAllowedDevicesByRoom(int roomId) {
-		String query = "SELECT device.name, room.name, device.state\n" //
-				+ "FROM room, device, permission\n" //
-				+ "WHERE room.id = device.id\n"//
-				+ "AND roomId = " + roomId + "\n" //
+		String query = "SELECT device.name, device.state, device.imagePath\n" //
+				+ "FROM device, permission\n" //
+				+ "WHERE roomId = " + roomId + "\n" //
 				+ "AND device.id = permission.id\n" //
 				+ "AND permission.userSSN = '9310101337'\n" // later User.ssn
 				+ "AND permission.isAllowed = true" + ";";
@@ -262,10 +297,10 @@ public class UserDb {
 				System.out.println("Query Succesful");
 			}
 			while (res.next()) {
-				System.out.println(res.getString("device.name") + " "
-						+ res.getString("room.name") + " "
-						+ res.getBoolean("device.state"));
-			}
+				if(printMsg){System.out.println(res.getString("device.name") + " "
+						+ res.getInt("device.state") + " "
+						+ res.getString("device.imagePath"));
+				}}
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.print(e);
@@ -332,7 +367,7 @@ public class UserDb {
 	 * INSERT
 	 * created by Mathias
 	 */
-	public void insertLogInHistory(String state) {
+	public void insertLogInHistory(String userSSN, String state) {
 		String insert = "INSERT INTO logHistory(id,userSSN,state, ip, timestamp)\n"
 				+ "VALUES( null , ? , ? , ? , null);";
 		if (printMsg) {
@@ -357,7 +392,7 @@ public class UserDb {
 	 * INSERT
 	 * created by Mathias
 	 */
-	public void insertDeviceHistory(int deviceId, int state) {
+	public void insertDeviceHistory(String userSSN, int deviceId, int state) {
 		String insert = "INSERT INTO deviceHistory(id,userSSN, deviceId ,state,  timestamp)\n"
 				+ "VALUES( null , ? , ? , ? , null);";
 		if (printMsg) {
@@ -366,7 +401,7 @@ public class UserDb {
 		}
 		try {
 			PreparedStatement ps = conn.prepareStatement(insert);
-			ps.setString(1, user_ssn);
+			ps.setString(1, user_ssn); //////////////////////
 			ps.setInt(2, deviceId);
 			ps.setInt(3, state);
 			if (printMsg) {

@@ -1,10 +1,16 @@
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 import Protocols.ArdConnector;
 
@@ -54,16 +60,33 @@ public class User{
 			return "toggleDevice";
 			 //convertArrayListToString(db_queue.udb.toggleDevice(Integer.parseInt(task.get(1).toString()),Boolean.parseBoolean(task.get(2).toString()) ));		
 		
-		}else if(task.get(0).equals("checkDevice") && task.isEmpty()==false && task.size()==2){	
-			String print=convertArrayListToString(db_queue.udb.checkDevice(Integer.parseInt(task.get(1).toString())));
-			System.out.println("checkDevice("+Integer.parseInt(task.get(1).toString())+") == "+print);
-			return print;		
-		}else if(task.get(0).equals("testDevice") && task.isEmpty()==false && task.size()==2){
-			//return convertArrayListToString(db_queue.udb.testDevice(Integer.parseInt(task.get(1).toString())));		
-		}else if(task.get(0).equals("checkAllDevices") && task.isEmpty()==false && task.size()==1){
-			return convertArrayListToString(db_queue.udb.checkAllDevices());
+//		}else if(task.get(0).equals("checkDevice") && task.isEmpty()==false && task.size()==2){	
+//			String print=convertArrayListToString(db_queue.udb.checkDevice(Integer.parseInt(task.get(1).toString())));
+//			System.out.println("checkDevice("+Integer.parseInt(task.get(1).toString())+") == "+print);
+//			return print;		
+//		}else if(task.get(0).equals("testDevice") && task.isEmpty()==false && task.size()==2){
+//			//return convertArrayListToString(db_queue.udb.testDevice(Integer.parseInt(task.get(1).toString())));		
+//		}else if(task.get(0).equals("checkAllDevices") && task.isEmpty()==false && task.size()==1){
+//			return convertArrayListToString(db_queue.udb.checkAllDevices());
 		}//else
 		return "TotallyWrong:";	
+	}
+//***********************************************************************	
+	public String getImageAsString(String imagePath){
+		String imageString=""; 
+		BufferedImage img = null;
+		 File imgPath = new File(imagePath);
+		 BufferedImage bufferedImage;
+		try {
+			bufferedImage = ImageIO.read(imgPath);
+			 WritableRaster raster = bufferedImage .getRaster();
+			 DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
+			imageString = new String(data.getData());
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("Problems loading the image");
+		}
+		return imageString;
 	}
 	
 	public String convertArrayListToString(ArrayList arrayList) {
